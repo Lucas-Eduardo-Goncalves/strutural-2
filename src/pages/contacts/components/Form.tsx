@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Col, Button, Input, Select, DatePicker, Form as AntdForm, Checkbox, InputNumber } from 'antd';
+import { Row, Col, Button, Input, Select, DatePicker, Form as AntdForm, Checkbox, InputNumber, Modal } from 'antd';
 
 import { CardWrapper, FormWrapper } from '../style';
 import { IDependences, IFormData, IFormDataErrors } from '../types';
@@ -23,6 +23,10 @@ const Form: React.FC<FormProps> = ({ initialData, handleSubmit, onCancel, loadin
   const [formSubmited, setFormSubmited] = useState(false);
   const [errors, setErrors] = useState<IFormDataErrors>({ ...defaultErrors });
 
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [dataItemModal, setDataItemModal] = useState("");
+
+
   function handleValidate(form: IFormData) {
     const validationErrors = validate(form);
     if (!validationErrors) setErrors({ ...defaultErrors });
@@ -45,6 +49,15 @@ const Form: React.FC<FormProps> = ({ initialData, handleSubmit, onCancel, loadin
     if (!hasErrors) return handleSubmit(data);
   }
 
+  function AddItemSelet() {
+    if(dataItemModal === "") {
+      alert("Não pode ser em branco")
+    }
+
+    handleChange('isActive', dataItemModal);
+    setIsOpenModal(false);
+  }
+
   function getErrorProps(key: keyof IFormData) {
     const currentError = errors[key];
 
@@ -63,10 +76,8 @@ const Form: React.FC<FormProps> = ({ initialData, handleSubmit, onCancel, loadin
       <Row gutter={40}>
         <Col span={12}>
           <CardWrapper type="inner" title="Informações Gerais">
-          
-       
-
-          <AntdForm.Item label="Status" {...getErrorProps('isActive')}>
+           <div className="divSelectButtonFlex">
+              <AntdForm.Item label="Status" {...getErrorProps('isActive')}  >
                 <Select
                   placeholder="Selecione uma Status"
                   value={data.isActive}
@@ -76,6 +87,8 @@ const Form: React.FC<FormProps> = ({ initialData, handleSubmit, onCancel, loadin
                     <Select.Option value={1}>Ativo</Select.Option>
                 </Select>
               </AntdForm.Item>
+              <Button onClick={() => setIsOpenModal(true)}>+</Button>
+           </div>
 
             <AntdForm.Item label="Nome" {...getErrorProps('name')}>
               <Input
@@ -92,58 +105,8 @@ const Form: React.FC<FormProps> = ({ initialData, handleSubmit, onCancel, loadin
                 onChange={e => handleChange('phone', e.target.value)}
               />
             </AntdForm.Item>
-           
-            <AntdForm.Item label="Email" {...getErrorProps('email')}>
-              <Input
-                placeholder="Email"
-                value={data.email}
-                onChange={e => handleChange('email', e.target.value)}
-              />
-            </AntdForm.Item>
-            <AntdForm.Item label="Senha" {...getErrorProps('password')}>
-              <Input
-                placeholder="Senha"
-                value={data.password}
-                type="password"
-                onChange={e => handleChange('password', e.target.value)}
-              />
-            </AntdForm.Item>
-     
           </CardWrapper>
-
         </Col>
-        
-        <Col span={12}>
-        <CardWrapper  type="inner" title="Login Sankhya">
-            <AntdForm.Item label="Usuário Sankhya" {...getErrorProps('sankhya_login')}>
-              <Input
-                placeholder="Nome de Usuário Sankhya"
-                value={data.sankhya_login}
-                onChange={e => handleChange('sankhya_login', e.target.value)}
-              />
-            </AntdForm.Item>
-            <Row >
-            <AntdForm.Item label="Senha Sankhya" {...getErrorProps('sankhya_pass')}>
-              <Input
-                placeholder="Senha"
-                value={data.sankhya_pass}
-                type="password"
-                onChange={e => handleChange('sankhya_pass', e.target.value)}
-              />
-            </AntdForm.Item>
-
-            
-            </Row>
-            <Row >
-            
-            </Row>
-                       
-          </CardWrapper>
-          
-          
-
-          
-        </Col>          
       </Row>
     </AntdForm>
 
@@ -155,6 +118,28 @@ const Form: React.FC<FormProps> = ({ initialData, handleSubmit, onCancel, loadin
           {isUpdatingData ? 'Atualizar' : 'Salvar'}
         </Button>
       </footer>
+
+      {isOpenModal && (
+        <Modal
+          title="Adicionar item ao select"
+          visible
+          onCancel={() => setIsOpenModal(false)}
+          footer={null}
+          maskClosable={false}
+          width={500}
+        >
+         <AntdForm.Item label="Nome do item">
+            <Input
+              placeholder="nome"
+              value={dataItemModal}
+              onChange={e => setDataItemModal(e.target.value)}
+            />
+          </AntdForm.Item>
+
+          <Button onClick={AddItemSelet}>Adicionar</Button>
+        </Modal>
+      )}
+      
     </FormWrapper>
   );
 };

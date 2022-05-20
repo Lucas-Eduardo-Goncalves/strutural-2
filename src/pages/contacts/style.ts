@@ -12,6 +12,21 @@ export const CardWrapper = Styled(Card)`
     margin-bottom: 16px;
   }
 
+  .divSelectButtonFlex {
+    display: flex;
+    width: 100%;
+    gap: 0.5rem;
+  
+    > div {
+      width: 100%;
+    }
+
+    > button {
+      margin-top: 2.20rem;
+      height: 2.35rem;
+    }
+  }
+
   .left-header {
     display: flex;
     align-items: center;

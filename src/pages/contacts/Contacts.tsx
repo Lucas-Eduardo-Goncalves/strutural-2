@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Table, ConfigProvider, Modal, Drawer, Row, Radio, Button as FilterButton } from 'antd';
 import { PlusOutlined, FilterOutlined, CloseOutlined } from '@ant-design/icons';
-import { Button } from '../../../components/buttons/buttons';
-import { AutoComplete } from '../../../components/autoComplete/autoComplete';
+import { Button } from '../../components/buttons/buttons';
+import { AutoComplete } from '../../components/autoComplete/autoComplete';
 import ptBR from 'antd/es/locale/pt_BR';
 
-import { PageHeader } from '../../../components/page-headers/page-headers';
-import { ExportButtonPageHeader } from '../../../components/buttons/export-button/export-button';
-import { Cards } from '../../../components/cards/frame/cards-frame';
-import { Main, TableWrapper } from '../../../container/styled';
+import { PageHeader } from '../../components/page-headers/page-headers';
+import { ExportButtonPageHeader } from '../../components/buttons/export-button/export-button';
+import { Cards } from '../../components/cards/frame/cards-frame';
+import { Main, TableWrapper } from '../../container/styled';
 
 import Filters from './components/Filters';
 import Form from './components/Form';
 import { useTable } from './hooks/useTable';
 
 import { pageSizeOptions } from './empty-data';
-import { TopToolBox } from '../../../container/ecommerce/Style';
-import { ThemeLayout } from '../../../layout/themeLayout';
+import { TopToolBox } from '../../container/ecommerce/Style';
+import { ThemeLayout } from '../../layout/themeLayout';
+
 
 const Contacts = () => {
   const {

@@ -7,9 +7,9 @@ import 'moment/locale/pt-br';
 import * as api from '../integration';
 import { IRowData, IParams, ISelectedData, IPaginationResult, IFormData, IFilters, IDependences } from '../types';
 import { NavLink, useRouteMatch } from 'react-router-dom';
-import { useModal } from '../../../../hooks/useModal';
+import { useModal } from '../../../hooks/useModal';
 import { defaultColumnProps, defaultFilters, defaultPaginationParams } from '../empty-data';
-import { Button } from '../../../../components/buttons/buttons';
+import { Button } from '../../../components/buttons/buttons';
 
 const MaxWidthColumn: React.FC<{ width: number }> = ({ width, children }) => (
   <div style={{ maxWidth: width, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>{children}</div>

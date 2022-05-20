@@ -1,4 +1,4 @@
-import { api } from "../../../../services/api";
+import { api } from "../../../services/api";
 import moment from 'moment';
 import { IFormData, IParams, IRowData, ISelectedData } from '../types';
 

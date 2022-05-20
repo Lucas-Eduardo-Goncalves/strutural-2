@@ -13,6 +13,7 @@ import Profissionais from '../pages/admin/profissionais/Profissionais';
 import Instances from '../pages/admin/instances';
 import Conference  from "../pages/conference/Conference";
 import Products from "../pages/products/Products"
+import Contacts from '../pages/contacts/Contacts';
 
 export function Routes() {
   const location = useLocation();
@@ -32,6 +33,7 @@ export function Routes() {
       <Route exact path="/" component={SignIn} />
       
       <ProtectedRoute path="/dashboard" component={Dashboard} />
+      <ProtectedRoute path="/contacts" component={Contacts}/>
       <ProtectedRoute path="/admin/agendas-ocupacao"  component={AgendasOcupacao} />
       <ProtectedRoute path="/dentista/agenda"  component={AgendasDentista} />
       <ProtectedRoute path="/admin/agendas"  component={Agendas} />
