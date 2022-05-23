@@ -1,5 +1,4 @@
-import React, { FormEvent, useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
 import { Form, Input, Button } from "antd";
 
 import { Checkbox } from "../../components/checkbox/checkbox";

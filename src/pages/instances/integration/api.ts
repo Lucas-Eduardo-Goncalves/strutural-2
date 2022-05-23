@@ -27,9 +27,9 @@ export const getData = async (params: IParams, status: any) => {
     }
 
   const filters = {
-    'filter[created_between]': params.filters.createdAt ? getBeetweenDate(params.filters.createdAt) : undefined,
+    'filter.createdAt': params.filters.createdAt ? getBeetweenDate(params.filters.createdAt) : undefined,
     'search': params.filters.search || undefined,
-  /*   'filter.categoryId': params.filters.categoryId || undefined, */
+    'filter.categoryId': params.filters.categoryId || undefined,
     'filter.status': statusVar, //params.filters.status === undefined ? undefined : params.filters.status,
     limit: params.pagination.pageSize,
     page: params.pagination.current,
@@ -44,22 +44,18 @@ export const getData = async (params: IParams, status: any) => {
     api.defaults.headers.common.authorization = `Bearer ${token}`;
   }
 
-  const response = await api.get('users', {
+  const response = await api.get('admin/instances', {
     params: parsedQueryFilters,
   });
-  console.log(response.data.data);
 
-  const data = response.data.data.data.map(
+  const data = response.data.data.map(
     (d: any) =>
       ({
         key: String(d.id),
         name: d.name || '',
-        phone: d.phone || '',
-        sankhya_login: d.sankhya_login || '',
-        sankhya_pass: d.sankhya_pass || '',
-        isActive: d.is_active,
-        lastViewed: d.last_viewed || '',
-        email: d.email || '',
+        instance: d.instance || '',
+        urlApi: d.url_api || '',
+        isActive: d.is_active || undefined,
         createdAt: d.created_at || '',
        
       } as IRowData),
@@ -103,11 +99,11 @@ export const getDependences = async () => {
 };
 
 export const createData = async (params: IFormData) => {
-  await api.post('users', params);
+  await api.post('api/v1/escolas', params);
 };
 
 export const updateData = async (key: string, params: IFormData) => {
-  await api.put('users/'+key, params);
+  await api.put('api/v1/escolas/'+key, params);
 };
 
 export const deleteData = async (params: ISelectedData) => {
@@ -119,9 +115,9 @@ export const deleteData = async (params: ISelectedData) => {
 };
 
 export const deleteDataOne = async (key: string) => {
-  await api.delete('/users/'+key);
+  await api.delete('/api/v1/escolas/'+key);
 };
 
 export const restoreDataOne = async (key: string) => {
-  await api.put('/users/restore/'+key);
+  await api.put('/api/v1/escolas/restore/'+key);
 };

@@ -9,8 +9,8 @@ interface IProtectedRouteProps {
 }
 
 export function ProtectedRoute({ component, path }: IProtectedRouteProps) {
-  const [cookies] = useCookies(['whatsapp-token']);
-  const token = cookies['whatsapp-token'];
+  const [cookies] = useCookies(['whats-front-token']);
+  const token = cookies['whats-front-token'];
 
   const isLoggedIn = token;
   return isLoggedIn ? <Route component={component} path={path} /> : <Redirect to="/" />;

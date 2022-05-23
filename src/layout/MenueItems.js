@@ -1,11 +1,9 @@
 import React from 'react';
 import { Menu } from 'antd';
 import { NavLink, useRouteMatch } from 'react-router-dom';
-import { ReactSVG } from 'react-svg';
 import FeatherIcon from 'feather-icons-react';
 import propTypes from 'prop-types';
-import jwt_decode from "jwt-decode";
-import { useCookies } from 'react-cookie';
+// import jwt_decode from "jwt-decode";
 
 const MenuItems = ({ darkMode, toggleCollapsed, topMenu }) => {
   const { path } = useRouteMatch();
@@ -20,10 +18,10 @@ const MenuItems = ({ darkMode, toggleCollapsed, topMenu }) => {
   );
   
 
-  const [cookies] = useCookies(['whatsapp-token']);
-  const token = cookies['whatsapp-token'];
+  // const [cookies] = useCookies(['whatsapp-token']);
+  // const token = cookies['whatsapp-token'];
   
-  const decoded = jwt_decode(token);
+  const decoded = 4;
  
   const onOpenChange = keys => {
     setOpenKeys(keys[keys.length - 1] !== 'recharts' ? [keys.length && keys[keys.length - 1]] : keys);
@@ -33,7 +31,7 @@ const MenuItems = ({ darkMode, toggleCollapsed, topMenu }) => {
     if (item.keyPath.length === 1) setOpenKeys([]);
   };
 
-  if(decoded.sub===432){
+  if(decoded.sub === 432){
     return (
       <Menu
         onOpenChange={onOpenChange}
