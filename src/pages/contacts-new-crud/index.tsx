@@ -26,11 +26,12 @@ export function ContactsNewCrud() {
     setSearch, 
     filters,
     setFilters,
+    refetch
   } = useFetch<IFetchPropsContacts>({ baseUrl: "contacts" });
 
   return (
     <ThemeLayout>
-      <PageHeader ghost title="Instâncias" 
+      <PageHeader ghost title="Contatos" 
         buttons={[
           <div key="1" className="page-header-actions">
             <ExportButtonPageHeader key="1" />
@@ -47,7 +48,7 @@ export function ContactsNewCrud() {
             <Row gutter={15} className="justify-content-center">
               <SearchInput handleSearch={setSearch} />
               <StatusRadioGroup />
-              <ModalAddContact />
+              <ModalAddContact refetch={refetch} />
             </Row>
           </TopToolBox>
 

@@ -11,9 +11,9 @@ import store from "./redux/store";
 
 import { ThemeProvider } from "styled-components";
 
-const { theme } = config;
 import config from "./config/config";
 import "./static/css/style.css";
+const { theme } = config;
 
 const AppComponent = () => {
   return (
