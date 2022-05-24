@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useCookies } from 'react-cookie';
+import Cookie from "js-cookie";
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 
 import { ProtectedRoute } from '../components/utilities/protectedRoute';
@@ -13,8 +13,7 @@ export function Routes() {
   const location = useLocation();
   const history = useHistory();
 
-  const [cookies] = useCookies(['whats-front-token']);
-  const token = cookies['whats-front-token'];
+  const token = Cookie.get("whats-front-token");
 
   useEffect(() => {
     if (location.pathname === '/' && token) {

@@ -1,7 +1,8 @@
 import React, { createContext, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
+
+import Cookie from "js-cookie";
 
 import { api } from "../../services/api";
 
@@ -21,27 +22,21 @@ interface AuthContextData {
 export const AuthContext = createContext({} as AuthContextData); 
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [
-    cookies, 
-    setCookie, 
-    removeCookie
-  ] = useCookies(['whats-front-token', "whats-front-user"]);
-
   const history = useHistory();
 
   const [user, setUser] = useState<IUserProps | undefined>(() => {
-    const userCookie = cookies["whats-front-user"];
+    const userCookie = Cookie.get("whats-front-user");
 
-    if(userCookie) return userCookie;
-    return undefined
+    if(userCookie) return JSON.parse(userCookie);
+    return undefined;
   });
 
   useEffect(() => {
-    const token = cookies['whats-front-token'];
+    const token = Cookie.get('whats-front-token');
     if (token) {
       api.defaults.headers.common.authorization = `Bearer ${token}`;
     }
-  }, [cookies]);
+  }, []);
 
   async function signIn({ email, password }) {
     try {
@@ -52,11 +47,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       api.defaults.headers.common.authorization = `Bearer ${token.accessToken}`;
 
-      setCookie('whats-front-token', token.accessToken, {
+      Cookie.set('whats-front-token', token.accessToken, {
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // one day
       });
 
-      setCookie('whats-front-user', user, {
+      Cookie.set('whats-front-user', JSON.stringify(user), {
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // one day
       });
 
@@ -76,7 +71,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   function signOut() {
-    removeCookie("whats-front-token");
+    Cookie.remove("whats-front-token");
     history.push("/");
   }
 

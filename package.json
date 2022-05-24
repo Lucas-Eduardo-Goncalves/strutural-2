@@ -21,7 +21,7 @@
     "feather-icons-react": "^0.4.3",
     "file-saver": "^2.0.5",
     "immutability-helper": "^3.1.1",
-    "js-cookie": "^2.2.1",
+    "js-cookie": "^3.0.1",
     "leaflet": "^1.7.1",
     "leaflet.markercluster": "^1.4.1",
     "moment": "^2.29.1",
