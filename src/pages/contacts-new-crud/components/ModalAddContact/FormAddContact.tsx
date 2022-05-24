@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-import { Button, Input, Select, Form as AntdForm, Modal } from "antd";
+import { Button, Input, Form as AntdForm } from "antd";
 import { CardWrapper, FormWrapper } from "../../styles";
 import { api } from "../../../../services/api";
+import { SelectSegmento } from "../SelectSegmento";
 
 interface IFormComponent {
   setModalIsOpen: (event: boolean) => void;
@@ -15,7 +16,6 @@ export function Form ({ setModalIsOpen, refetch }: IFormComponent) {
   const [email, setEmail] = useState("");
   const [select, setSelect] = useState("");
 
-  const [isOpenModal, setIsOpenModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   function clearFieldsAndCloseModal() {
@@ -61,26 +61,6 @@ export function Form ({ setModalIsOpen, refetch }: IFormComponent) {
     <FormWrapper>
       <AntdForm layout="vertical" style={{ padding: 30 }}>
         <CardWrapper type="inner" title="Informações Gerais">
-        <div style={{ display: "flex", gap: "1rem" }}>
-          <AntdForm.Item label="Segmento" style={{ width: "100%" }}>
-            <Select
-              placeholder="Selecione uma segmento"
-              value={select}
-              onChange={value => setSelect(value)}
-            >
-                <Select.Option value={"0"}>segmento1</Select.Option>
-                <Select.Option value={"1"}>segmento2</Select.Option>
-            </Select>
-          </AntdForm.Item>
-
-          <Button 
-            onClick={() => setIsOpenModal(true)}
-            style={{ marginTop: "2.20rem", height: "2.3rem" }}
-          >
-            +
-          </Button>
-        </div>
-
           <AntdForm.Item label="Nome">
             <Input
               placeholder="Nome Completo"
@@ -96,6 +76,8 @@ export function Form ({ setModalIsOpen, refetch }: IFormComponent) {
               onChange={e => setEmail(e.target.value)}
               />
           </AntdForm.Item>
+
+          <SelectSegmento setSelectValue={setSelect}/>
         </CardWrapper>
       </AntdForm>
 
@@ -108,25 +90,6 @@ export function Form ({ setModalIsOpen, refetch }: IFormComponent) {
           Salvar
         </Button>
       </footer>
-
-      <Modal
-        title="Adicionar item ao select"
-        visible={isOpenModal}
-        onCancel={() => setIsOpenModal(false)}
-        footer={null}
-        maskClosable={false}
-        width={500}
-        >
-        <AntdForm.Item label="Nome do item">
-          <Input
-            placeholder="nome"
-            // value={dataItemModal}
-            // onChange={e => setDataItemModal(e.target.value)}
-            />
-        </AntdForm.Item>
-
-        <Button onClick={() => {}}>Adicionar</Button>
-      </Modal>
     </FormWrapper>
   );
 };
