@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Table, ConfigProvider, Modal, Drawer, Row, Radio, Button as FilterButton } from 'antd';
+import { Col, Table, ConfigProvider, Modal, Drawer, Row, Button as FilterButton } from 'antd';
 import { PlusOutlined, FilterOutlined, CloseOutlined } from '@ant-design/icons';
 import { Button } from '../../components/buttons/buttons';
 import { AutoComplete } from '../../components/autoComplete/autoComplete';
@@ -24,13 +24,11 @@ const Contacts = () => {
     data,
     selectedData,
     setSelectedData,
-    statusSelected,
     showFilterButton,
     columns,
     params,
     paginationResult,
     dependences,
-    filterKey,
 
     listLoading,
     actionLoading,
@@ -44,7 +42,6 @@ const Contacts = () => {
     handleChangeParams,
     handleClearFilters,
     handleUpdateFilters,
-    handleChangeForFilter,
     handleSearch,
 
     filtersModal,
@@ -61,7 +58,7 @@ const Contacts = () => {
     selectedRowKeys: [],
   });
 
-  const { item, selectedRowKeys } = state;
+  const { selectedRowKeys } = state;
 
  
   

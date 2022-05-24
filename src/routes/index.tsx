@@ -26,7 +26,7 @@ export function Routes() {
     <Switch>
       <Route exact path="/" component={SignIn} />
       
-      <ProtectedRoute path="/contacts" component={Contacts} />
+      <ProtectedRoute path="/admin/contacts" component={Contacts} />
       <ProtectedRoute path="/admin/instances"  component={Instances} />
       <ProtectedRoute path="/admin/ContactsNewCrud"  component={ContactsNewCrud} />
     </Switch>

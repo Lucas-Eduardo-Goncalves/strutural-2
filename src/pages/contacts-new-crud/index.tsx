@@ -53,7 +53,7 @@ export function ContactsNewCrud() {
           </TopToolBox>
 
           <TableWrapper className="table-order table-responsive">
-            <TableComponent isLoading={isFetching} dataFetch={dataFetch} />
+            <TableComponent refetch={refetch} isLoading={isFetching} dataFetch={dataFetch} />
           </TableWrapper>
         </Cards>
       </Main>

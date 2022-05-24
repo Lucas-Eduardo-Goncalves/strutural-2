@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import toast from "react-hot-toast";
 
 import { api } from "../services/api";
 
@@ -28,7 +29,7 @@ export function useFetch<T = unknown>({
 
   const linkFetch = `${baseUrl}?limit=${itensPerPage}&page=${currentPage}&search=${search}&sortBy=${columnOrdenation}${filters}`;
 
-  async function fetchAPI() {
+  const fetchAPI = useCallback(async () => {
     let variableFetchLink = linkFetch;
 
     if (!isLinkProps) {
@@ -36,17 +37,24 @@ export function useFetch<T = unknown>({
     }
 
     setIsFetching(true);
-    const { data } = await api.get(variableFetchLink);
+    try {
+      const { data } = await api.get(variableFetchLink);
 
-    if (isArray) {
-      setDataFetch(data.data);
-      setTotalItens(data.meta.totalItems);
-    } else {
-      setDataFetch(data);
-      setTotalItens(0);
+      if (isArray) {
+        setDataFetch(data.data);
+        setTotalItens(data.meta.totalItems);
+      } else {
+        setDataFetch(data);
+        setTotalItens(0);
+      }
+
+      setIsFetching(false);
+    } catch(err) {
+      toast.error("Algo deu errado 😰");
+      setIsFetching(false);
+      console.log(err);
     }
-    setIsFetching(false);
-  }
+  }, [baseUrl, isArray, isLinkProps, linkFetch])
 
   async function refetch() {
     await fetchAPI();
@@ -56,15 +64,15 @@ export function useFetch<T = unknown>({
   const token = cookies["whats-front-token"];
 
   useEffect(() => {
-    if (token) {
+    if(token) {
       api.defaults.headers.common.authorization = `Bearer ${token}`;
       fetchAPI();
     }
-  }, []);
+  }, [fetchAPI, token]);
 
   useEffect(() => {
-    fetchAPI();
-  }, [itensPerPage, currentPage, filters, search, columnOrdenation]);
+    if(token) fetchAPI();
+  }, [itensPerPage, currentPage, filters, search, columnOrdenation, fetchAPI, token]);
 
   return {
     dataFetch,

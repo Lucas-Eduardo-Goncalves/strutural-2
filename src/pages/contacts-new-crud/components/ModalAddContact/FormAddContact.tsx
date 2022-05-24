@@ -1,15 +1,7 @@
 import React, { useState } from "react";
-import { 
-  Row, 
-  Col, 
-  Button, 
-  Input, 
-  Select, 
-  Form as AntdForm, 
-  Modal, 
-} from "antd";
-
 import toast from "react-hot-toast";
+
+import { Button, Input, Select, Form as AntdForm, Modal } from "antd";
 import { CardWrapper, FormWrapper } from "../../styles";
 import { api } from "../../../../services/api";
 
