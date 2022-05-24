@@ -1,28 +1,25 @@
 import React, { useState } from 'react';
-import { Button, Select, DatePicker, Form } from 'antd';
+import { Button, DatePicker, Form } from 'antd';
 
 import { FiltersWrapper } from '../../styles';
-import { IFilters } from '../../types';
+import moment from 'moment';
 
 type FiltersProps = {
-  // initialFilters: IFilters;
-  updateFilters: (filters: IFilters) => void;
+  filters: string;
   clearFilters: () => void;
-  showButton: boolean;
-  // dependences: IDependences;
+  applyFilters: (event: string) => void;
 };
 
-export function FilterDrawer ({ 
-  // initialFilters, 
-  updateFilters, 
-  clearFilters, 
-  showButton, 
-  // dependences
-}: FiltersProps) {
-  const [filters, setFilters] = useState<IFilters>({} as IFilters);
+export function FilterDrawer ({ applyFilters, clearFilters, filters }: FiltersProps) {
+  const [dataFilter, setDataFilter] = useState<any>();
+  
+  function handleChangeFilters([date1, date2]: any) {
+    const format = (date?: moment.Moment) => (date ? date.format('YYYY-MM-DD') : '');
+    setDataFilter(`&filter.createdAt=$btw:${format(date1)},${format(date2)}`)
+  }
 
-  function handleChange(key: keyof IFilters, value: any) {
-    setFilters(prev => ({ ...prev, [key]: value }));
+  function handleApplyFilters() {
+    applyFilters(dataFilter);
   }
 
   return (
@@ -31,31 +28,30 @@ export function FilterDrawer ({
         <Form.Item label="Data criação">
           <DatePicker.RangePicker
             format="DD/MM/YYYY"
-            value={filters.createdAt}
-            onChange={dates => handleChange('createdAt', dates)}
+            onChange={dates => handleChangeFilters(dates)}
           />
         </Form.Item>
 
-        <Form.Item label="Cidade">
+        {/* <Form.Item label="Cidade">
           <Select
             placeholder="Filtrar por categoria"
             value={filters.categoryId}
             onChange={value => handleChange('categoryId', value)}
           >
-            {/* {dependences.cidades.map(c => (
+            {dependences.cidades.map(c => (
               <Select.Option value={c.value}>{c.label}</Select.Option>
-            ))} */}
+            ))}
           </Select>
-        </Form.Item>
+        </Form.Item> */}
       </Form>
 
       <footer>
-        <Button type="primary" size="large" onClick={() => updateFilters(filters)}>
+        <Button type="primary" size="large" onClick={handleApplyFilters}>
           Aplicar filtros
         </Button>
 
-        {showButton && (
-          <Button type="primary" danger size="large" onClick={() => clearFilters()}>
+        {filters && (
+          <Button type="primary" danger size="large" onClick={clearFilters}>
             Limpar filtros
           </Button>
         )}

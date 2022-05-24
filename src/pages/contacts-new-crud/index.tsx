@@ -37,7 +37,7 @@ export function ContactsNewCrud() {
             <ExportButtonPageHeader key="1" />
             
             {filters && <ClearFilterButton clearFilter={() => setFilters("")} />}
-            <FilterButton openFilter={() => {}}/>
+            <FilterButton filters={filters} applyFilters={setFilters} clearFilters={() => setFilters("")}/>
           </div>
         ]}
       />
