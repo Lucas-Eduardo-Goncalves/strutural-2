@@ -18,7 +18,7 @@ export function Routes() {
 
   useEffect(() => {
     if (location.pathname === '/' && token) {
-      history.push('/admin/instances');
+      history.push('/admin/ContactsNewCrud');
     }
   }, [history, token, location.pathname]);
 
