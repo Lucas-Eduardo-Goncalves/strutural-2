@@ -58,10 +58,12 @@ function SignIn() {
           </Form.Item>
 
           <div className="auth-form-action">
-            <Checkbox checked={checkboxState} onChange={handleClickCheckbox}>Manter Logado</Checkbox>
-            {/* <NavLink className="forgot-pass-link" to="/forgotPassword">
-              Esqueceu a senha?
-            </NavLink> */}
+            <Checkbox 
+              checked={checkboxState} 
+              onChange={handleClickCheckbox}
+            >
+              Manter Logado
+            </Checkbox>
           </div>
 
           <Form.Item>

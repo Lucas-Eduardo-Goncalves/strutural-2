@@ -5,6 +5,7 @@ import { Button, Input, Form as AntdForm } from "antd";
 import { CardWrapper, FormWrapper } from "../styles";
 import { api } from "../../../services/api";
 import { SelectSegmento } from "./Select";
+import { UploadComponent } from "../../../components/UploadComponent";
 
 interface IFormInitialFields {
   name: string;
@@ -107,6 +108,8 @@ export function Form({
           <SelectSegmento selectValue={select} setSelectValue={setSelect} />
         </CardWrapper>
       </AntdForm>
+
+      {formType === "post" && <UploadComponent />} 
 
       <footer style={{ padding: "20px 30px", borderTop: "1px solid #f0f0f0" }}>
         <Button type="default" onClick={clearFieldsAndCloseModal}>
