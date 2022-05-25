@@ -2,26 +2,45 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 
 import { Button, Input, Form as AntdForm } from "antd";
-import { CardWrapper, FormWrapper } from "../../styles";
-import { api } from "../../../../services/api";
-import { SelectSegmento } from "../SelectSegmento";
+import { CardWrapper, FormWrapper } from "../styles";
+import { api } from "../../../services/api";
+import { SelectSegmento } from "./Select";
 
-interface IFormComponent {
-  setModalIsOpen: (event: boolean) => void;
-  refetch: () => void;
+interface IFormInitialFields {
+  name: string;
+  email: string;
+  select: { label: string; value: string; };
 }
 
-export function Form ({ setModalIsOpen, refetch }: IFormComponent) {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [select, setSelect] = useState("");
+interface IFormComponent {
+  formType: "put" | "post",
+  initialFields?: IFormInitialFields;
+  refetch: () => void;
+  contactId?: string;
+  setModalIsOpen: (event: boolean) => void;
+}
+
+export function Form({ 
+  formType,
+  setModalIsOpen, 
+  refetch, 
+  contactId,
+  initialFields = { email: "", name: "", select: { label: "", value: "" } } 
+}: IFormComponent) {
+  const [name, setName] = useState(initialFields.name);
+  const [email, setEmail] = useState(initialFields.email);
+
+  const [select, setSelect] = useState({ 
+    label: initialFields.select.label,
+    value: initialFields.select.value, 
+  });
 
   const [isLoading, setIsLoading] = useState(false);
 
   function clearFieldsAndCloseModal() {
     setName("");
     setEmail("");
-    setSelect("");
+    setSelect({ label: "", value: "" });
     setModalIsOpen(false);
   }
 
@@ -47,8 +66,16 @@ export function Form ({ setModalIsOpen, refetch }: IFormComponent) {
     } 
 
     try {
-      await api.post("/contacts", { name, email, segmentId: select });
-      setModalIsOpen(false);
+      if(formType === "post") {
+        await api.post("/contacts", { name, email, segmentId: select.value });
+        setModalIsOpen(false);
+      } else {
+        if(contactId) {
+          await api.put(`contacts/${contactId}`, { name, email, segmentId: select.value });
+          setModalIsOpen(false);
+        }
+      }
+      
     } catch(err) {
       console.log(err)
     }
@@ -74,14 +101,14 @@ export function Form ({ setModalIsOpen, refetch }: IFormComponent) {
               placeholder="seuemail@gmai.com"
               value={email}
               onChange={e => setEmail(e.target.value)}
-              />
+            />
           </AntdForm.Item>
 
-          <SelectSegmento setSelectValue={setSelect}/>
+          <SelectSegmento selectValue={select} setSelectValue={setSelect} />
         </CardWrapper>
       </AntdForm>
 
-      <footer style={{padding: "20px 30px", borderTop: "1px solid #f0f0f0"}}>
+      <footer style={{ padding: "20px 30px", borderTop: "1px solid #f0f0f0" }}>
         <Button type="default" onClick={clearFieldsAndCloseModal}>
           Voltar
         </Button>
@@ -92,4 +119,4 @@ export function Form ({ setModalIsOpen, refetch }: IFormComponent) {
       </footer>
     </FormWrapper>
   );
-};
+}

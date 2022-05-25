@@ -2,16 +2,19 @@ import React from "react";
 import moment from "moment";
 import { ColumnsType } from "antd/lib/table";
 
-import FeatherIcon from "feather-icons-react";
+
 import { IContactProps } from "../../types";
 import { SortOrder } from "../../../../container/pages/escolas/types";
-import { Button } from "../../../../components/buttons/buttons";
+import { TableButtonDelete } from "./TableButtonDelete";
+import { TableButtonEdit } from "./TableButtonEdit";
+
 
 interface ITableColumnControllerProps {
   handleDeleteFunction: (contactId: string) => Promise<void>;
+  refetch: () => void;
 }
 
-export function TableColumnController({ handleDeleteFunction }: ITableColumnControllerProps) {
+export function TableColumnController({ handleDeleteFunction, refetch }: ITableColumnControllerProps) {
   const defaultColumnProps = {
     sorter: true,
     filterMultiple: false,
@@ -58,14 +61,15 @@ export function TableColumnController({ handleDeleteFunction }: ITableColumnCont
       dataIndex: "actions",
       render: (_, row: IContactProps) => (
         <div className="table-actions">
-          <Button 
-            className="btn-icon" 
-            type="danger" 
-            shape="circle" 
-            onClick={() => handleDeleteFunction(String(row.id))}
-          >
-            <FeatherIcon icon="trash-2" size={16} />
-          </Button>
+          <TableButtonEdit 
+            contactId={String(row.id)} 
+            refetch={refetch}
+          />
+
+          <TableButtonDelete 
+            handleDeleteFunction={handleDeleteFunction} 
+            contactId={String(row.id)} 
+          />
         </div>
       ),
       ...defaultColumnProps,

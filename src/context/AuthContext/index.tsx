@@ -58,7 +58,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setUser(user);
       toast.success(`Seja bem vindo, ${user.firstName}!`)
 
-      history.push('/admin/ContactsNewCrud');
+      history.push('/admin/contacts');
     } catch (err: any) {
       if(err.response.data.message.message === "error.userNotFound") {
         toast.error("Usuário não encontrado");

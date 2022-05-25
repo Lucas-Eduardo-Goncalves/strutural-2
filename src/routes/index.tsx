@@ -6,8 +6,7 @@ import { ProtectedRoute } from '../components/utilities/protectedRoute';
 
 import SignIn from '../pages/SignIn';
 import Instances from '../pages/instances';
-import Contacts from '../pages/contacts';
-import { ContactsNewCrud } from '../pages/contacts-new-crud';
+import { Contacts } from '../pages/contacts';
 
 export function Routes() {
   const location = useLocation();
@@ -17,7 +16,7 @@ export function Routes() {
 
   useEffect(() => {
     if (location.pathname === '/' && token) {
-      history.push('/admin/ContactsNewCrud');
+      history.push('/admin/contacts');
     }
   }, [history, token, location.pathname]);
 
@@ -27,7 +26,6 @@ export function Routes() {
       
       <ProtectedRoute path="/admin/contacts" component={Contacts} />
       <ProtectedRoute path="/admin/instances"  component={Instances} />
-      <ProtectedRoute path="/admin/ContactsNewCrud"  component={ContactsNewCrud} />
     </Switch>
   );
 }

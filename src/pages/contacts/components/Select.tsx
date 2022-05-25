@@ -14,18 +14,22 @@ interface ISegmentProps {
   userId: number;
 }
 
-interface ISelectSegmentoComponent {
-  setSelectValue: (event: string) => void;
+interface ISelectProps {
+  label: string; 
+  value: string;
 }
 
-export function SelectSegmento({ setSelectValue }: ISelectSegmentoComponent) {
+interface ISelectSegmentoComponent {
+  selectValue: ISelectProps;
+  setSelectValue: (event: ISelectProps) => void;
+}
+
+export function SelectSegmento({ selectValue, setSelectValue }: ISelectSegmentoComponent) {
   const { dataFetch, refetch } = useFetch<ISegmentProps[]>({ baseUrl: "segments", isLinkProps: false });
   
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [dataInputModal, setDataInputModal] = useState("");
-
-  const [select, setSelect] = useState("");
-
+  
   async function handleNewSelect() {
     if(!dataInputModal) {
       toast.error("O campo não pode estar em branco");
@@ -33,15 +37,18 @@ export function SelectSegmento({ setSelectValue }: ISelectSegmentoComponent) {
     }
 
     const { data } = await api.post<ISegmentProps>("segments", { name: dataInputModal });
-    setSelectValue(String(data.id))
-    setSelect(data.name)
+
+    setSelectValue({ 
+      value: String(data.id), 
+      label: data.name 
+    })
+
     setModalIsOpen(false);
     refetch()
   }
 
   function handleSelected(event: string) {
-    setSelect(event);
-    setSelectValue(event);
+    setSelectValue({ label: event, value: event });
   }
 
   return (
@@ -49,9 +56,10 @@ export function SelectSegmento({ setSelectValue }: ISelectSegmentoComponent) {
       <div style={{ display: "flex", gap: "1rem" }}>
         <AntdForm.Item label="Segmento" style={{ width: "100%" }}>
           <Select
+            showSearch
             placeholder="Selecione uma segmento"
-            value={select}
-            onChange={value => handleSelected(value)}
+            value={selectValue.value !== "" && Number(selectValue.value)}
+            onChange={value => handleSelected(String(value))}
           > 
             {dataFetch?.map(segment => (
               <Select.Option value={segment.id}>{segment.name}</Select.Option>

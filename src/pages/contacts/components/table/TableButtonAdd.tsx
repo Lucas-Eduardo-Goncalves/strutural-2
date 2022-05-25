@@ -3,13 +3,13 @@ import { Col, Modal } from "antd";
 
 import { Button } from '../../../../components/buttons/buttons';
 import { PlusOutlined } from '@ant-design/icons';
-import { Form } from "./FormAddContact";
+import { Form } from "../ContactForm";
 
 interface IModalAddContactComponent {
   refetch: () => void;
 }
 
-export function ModalAddContact({ refetch }: IModalAddContactComponent) {
+export function ButtonAdd({ refetch }: IModalAddContactComponent) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   return (
@@ -21,7 +21,7 @@ export function ModalAddContact({ refetch }: IModalAddContactComponent) {
       </div>
 
       <Modal
-        title="Adicionar Usuário"
+        title="Adicionar contato"
         visible={modalIsOpen}
         onCancel={() => setModalIsOpen(false)}
         confirmLoading={true}
@@ -31,7 +31,11 @@ export function ModalAddContact({ refetch }: IModalAddContactComponent) {
         style={{marginTop: -60}}
         bodyStyle={{padding: 0}}
       >
-        <Form setModalIsOpen={setModalIsOpen} refetch={refetch} />
+        <Form
+          formType="post"
+          setModalIsOpen={setModalIsOpen} 
+          refetch={refetch} 
+        />
       </Modal>
     </Col>
   );

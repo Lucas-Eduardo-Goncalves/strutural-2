@@ -50,7 +50,6 @@ export function useFetch<T = unknown>({
 
       setIsFetching(false);
     } catch(err) {
-      toast.error("Algo deu errado 😰");
       setIsFetching(false);
       console.log(err);
     }

@@ -20,8 +20,6 @@ const MenuItems = ({ darkMode, toggleCollapsed, topMenu }) => {
 
   // const [cookies] = useCookies(['whatsapp-token']);
   // const token = cookies['whatsapp-token'];
-  
-  const decoded = 4;
  
   const onOpenChange = keys => {
     setOpenKeys(keys[keys.length - 1] !== 'recharts' ? [keys.length && keys[keys.length - 1]] : keys);

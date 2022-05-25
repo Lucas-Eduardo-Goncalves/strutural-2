@@ -12,10 +12,6 @@ interface ITableComponentProps {
   refetch: () => void;
 }
 
-interface IHandleDeleteContactProps {
-  
-}
-
 export function TableComponent({ refetch, dataFetch, isLoading }: ITableComponentProps) {
   const pageSizeOptions = ['10', '30', '50'];
 
@@ -30,7 +26,7 @@ export function TableComponent({ refetch, dataFetch, isLoading }: ITableComponen
     refetch();
   }
 
-  const { columns } = TableColumnController({ handleDeleteFunction });
+  const { columns } = TableColumnController({ handleDeleteFunction, refetch });
 
   return (
     <AntdTable
