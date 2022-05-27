@@ -16,7 +16,7 @@ export function SelectSegmento({
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [dataInputModal, setDataInputModal] = useState("");
 
-  const { dataFetch, refetch } = useFetch<IFetchProps[]>({ baseUrl: fetchUrl });
+  const { dataFetch, refetch, setSearch } = useFetch<IFetchProps[]>({ baseUrl: fetchUrl });
   
   async function handleNewSelect() {
     if(!dataInputModal) {
@@ -39,12 +39,26 @@ export function SelectSegmento({
     setSelectValue({ label: event, value: event });
   }
 
+  let timer: NodeJS.Timeout;
+  
+  function debounce(event: string) {
+    clearTimeout(timer);
+    
+    timer = setTimeout(() => {
+      setSearch(event);
+    }, 1000)
+  }
+
+
   return (
     <>
       <div style={{ display: "flex", gap: "1rem" }}>
         <AntdForm.Item label="Segmento" style={{ width: "100%" }}>
           <Select
+            showSearch
+            filterOption={false}
             placeholder={title}
+            onSearch={e => debounce(e)}
             value={selectValue.value !== "" && String(selectValue.value)}
             onChange={value => handleSelected(String(value))}
           > 
