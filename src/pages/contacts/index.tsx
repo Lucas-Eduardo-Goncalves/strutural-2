@@ -25,7 +25,8 @@ export function Contacts() {
     dataFetch, 
     setSearch, 
     filters,
-    setFilters,
+    handleAddFilters,
+    clearFilters,
     refetch
   } = useFetch<IFetchPropsContacts>({ baseUrl: "contacts" });
 
@@ -36,8 +37,8 @@ export function Contacts() {
           <div key="1" className="page-header-actions">
             <ExportButtonPageHeader key="1" />
             
-            {filters && <ClearFilterButton clearFilter={() => setFilters("")} />}
-            <FilterButton filters={filters} applyFilters={setFilters} clearFilters={() => setFilters("")}/>
+            {filters.length !== 0 && <ClearFilterButton clearFilter={clearFilters} />}
+            <FilterButton filters={filters} handleAddFilters={handleAddFilters} clearFilters={clearFilters}/>
           </div>
         ]}
       />
@@ -47,7 +48,7 @@ export function Contacts() {
           <TopToolBox>
             <Row gutter={15} className="justify-content-center">
               <SearchInput handleSearch={setSearch} />
-              <StatusRadioGroup />
+              <StatusRadioGroup handleAddFilters={handleAddFilters}/>
               <ButtonAdd refetch={refetch} />
             </Row>
           </TopToolBox>

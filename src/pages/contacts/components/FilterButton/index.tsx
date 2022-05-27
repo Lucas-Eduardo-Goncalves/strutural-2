@@ -5,18 +5,23 @@ import { Button } from '../../../../components/buttons/buttons';
 import { FilterDrawer } from "./FilterDrawer";
 import { Drawer } from "antd";
 
-interface IFilterButtonComponent {
-  filters: string;
-  clearFilters: () => void;
-  applyFilters: (event: string) => void;
+type ITypeFilter = {
+  content: string, 
+  key: string;
 }
 
-export function FilterButton({ clearFilters, filters, applyFilters }: IFilterButtonComponent) {
+interface IFilterButtonComponent {
+  filters: ITypeFilter[];
+  clearFilters: () => void;
+  handleAddFilters: (event: ITypeFilter) => void;
+}
+
+export function FilterButton({ clearFilters, filters, handleAddFilters }: IFilterButtonComponent) {
   const [state, setState] = useState(false);
 
-  function handleApplyFilters(event: string) {
+  function handleApplyFilters(event: {content: string, key: string;}) {
     setState(false);
-    applyFilters(event);
+    handleAddFilters(event);
   }
 
   function handleClearFilters() {
@@ -37,7 +42,7 @@ export function FilterButton({ clearFilters, filters, applyFilters }: IFilterBut
 
       <Drawer title="Filtros" width={400} style={{ zIndex: 1000 }} onClose={() => setState(false)} visible={state}>
         <FilterDrawer 
-          applyFilters={handleApplyFilters} 
+          handleAddFilters={handleApplyFilters} 
           clearFilters={handleClearFilters} 
           filters={filters} 
         />

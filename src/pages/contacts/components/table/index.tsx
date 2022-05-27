@@ -28,6 +28,12 @@ export function TableComponent({ refetch, dataFetch, isLoading }: ITableComponen
 
   const { columns } = TableColumnController({ handleDeleteFunction, refetch });
 
+  const filters = [
+    { content: "0", key: "isActive" }
+  ]
+
+  console.log(filters[0].key + ":" + filters[0].content)
+
   return (
     <AntdTable
       loading={isLoading}
@@ -35,12 +41,12 @@ export function TableComponent({ refetch, dataFetch, isLoading }: ITableComponen
       rowSelection={{  }}
       dataSource={dataFetch}
       columns={columns}
-      pagination={{ 
+      // pagination={{ 
         // ...params.pagination, 
         // ...paginationResult, 
-        pageSizeOptions, 
-        showSizeChanger: true 
-      }}
+        // pageSizeOptions, 
+        // showSizeChanger: true 
+      // }}
     />
   );
 }

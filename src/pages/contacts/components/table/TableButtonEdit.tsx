@@ -10,6 +10,7 @@ import { useFetch } from "../../../../hooks/useFetch";
 interface ITableButtonEditProps {
   contactId: string;
   refetch: () => void;
+  data: IFetchProps;
 }
 
 interface IFetchProps {
@@ -18,13 +19,8 @@ interface IFetchProps {
   segmentId: number;
 }
 
-export function TableButtonEdit({ contactId, refetch }: ITableButtonEditProps) {
+export function TableButtonEdit({ contactId, refetch, data }: ITableButtonEditProps) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  const { dataFetch } = useFetch<IFetchProps>({ 
-    isArray: false, 
-    baseUrl: `contacts/${contactId}`
-  });
 
   return (
     <>
@@ -49,22 +45,20 @@ export function TableButtonEdit({ contactId, refetch }: ITableButtonEditProps) {
         style={{marginTop: -60}}
         bodyStyle={{padding: 0}}
       > 
-        {dataFetch && (
-          <Form 
-            formType="put"
-            contactId={contactId}
-            initialFields={{
-              name: dataFetch.name,
-              email: dataFetch.email,
-              select: { 
-                label: String(dataFetch.segmentId), 
-                value: String(dataFetch.segmentId), 
-              }
-            }}
-            setModalIsOpen={setModalIsOpen} 
-            refetch={refetch} 
-          />
-        )}
+        <Form 
+          formType="put"
+          contactId={contactId}
+          initialFields={{
+            name: data.name,
+            email: data.email,
+            select: { 
+              label: String(data.segmentId), 
+              value: String(data.segmentId), 
+            }
+          }}
+          setModalIsOpen={setModalIsOpen} 
+          refetch={refetch} 
+        />
       </Modal>
     </>
   );

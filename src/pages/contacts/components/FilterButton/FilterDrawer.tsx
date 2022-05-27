@@ -1,25 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, DatePicker, Form } from 'antd';
 
 import { FiltersWrapper } from '../../styles';
 import moment from 'moment';
 
+type ITypeFilter = {
+  content: string, 
+  key: string;
+}
+
 type FiltersProps = {
-  filters: string;
+  filters: ITypeFilter[];
   clearFilters: () => void;
-  applyFilters: (event: string) => void;
+  handleAddFilters: (event: {key: string; content: string;}) => void;
 };
 
-export function FilterDrawer ({ applyFilters, clearFilters, filters }: FiltersProps) {
-  const [dataFilter, setDataFilter] = useState<any>();
-  
+export function FilterDrawer ({ handleAddFilters, clearFilters, filters }: FiltersProps) {
   function handleChangeFilters([date1, date2]: any) {
     const format = (date?: moment.Moment) => (date ? date.format('YYYY-MM-DD') : '');
-    setDataFilter(`&filter.createdAt=$btw:${format(date1)},${format(date2)}`)
-  }
-
-  function handleApplyFilters() {
-    applyFilters(dataFilter);
+    handleAddFilters({ key: "filter.createdAt", content: `${format(date1)},${format(date2)}` })
   }
 
   return (
@@ -46,11 +45,7 @@ export function FilterDrawer ({ applyFilters, clearFilters, filters }: FiltersPr
       </Form>
 
       <footer>
-        <Button type="primary" size="large" onClick={handleApplyFilters}>
-          Aplicar filtros
-        </Button>
-
-        {filters && (
+        {filters.length !== 0 && (
           <Button type="primary" danger size="large" onClick={clearFilters}>
             Limpar filtros
           </Button>

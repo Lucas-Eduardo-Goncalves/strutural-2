@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 import { Button, Input, Form as AntdForm } from "antd";
 import { CardWrapper, FormWrapper } from "../styles";
 import { api } from "../../../services/api";
-import { SelectSegmento } from "./Select";
+import { SelectSegmento } from "../../../components/Select";
 import { UploadComponent } from "../../../components/UploadComponent";
+import { useFetch } from "../../../hooks/useFetch";
 
 interface IFormInitialFields {
   name: string;
@@ -21,6 +22,15 @@ interface IFormComponent {
   setModalIsOpen: (event: boolean) => void;
 }
 
+interface ISegmentProps {
+  createdAt: string;
+  deletedAt: string | null;
+  id: number;
+  name: string;
+  updatedAt: string;
+  userId: number;
+}
+
 export function Form({ 
   formType,
   setModalIsOpen, 
@@ -28,10 +38,16 @@ export function Form({
   contactId,
   initialFields = { email: "", name: "", select: { label: "", value: "" } } 
 }: IFormComponent) {
+
   const [name, setName] = useState(initialFields.name);
   const [email, setEmail] = useState(initialFields.email);
 
   const [select, setSelect] = useState({ 
+    label: initialFields.select.label,
+    value: initialFields.select.value, 
+  });
+
+  const [select2, setSelect2] = useState({ 
     label: initialFields.select.label,
     value: initialFields.select.value, 
   });
@@ -44,6 +60,31 @@ export function Form({
     setSelect({ label: "", value: "" });
     setModalIsOpen(false);
   }
+
+  const [segmentOption, setSegmentOption] = useState<{ label: string; value: string; }[]>()
+  const [tagOption, setTagOption] = useState<{ label: string; value: string; }[]>()
+  const { 
+    dataFetch: segmentData, 
+    refetch: segmentRefetch,
+  } = useFetch<ISegmentProps[]>({ baseUrl: "segments" });
+
+  useEffect(() => {
+    const resSegment = segmentData?.map(item => {
+      return {
+        label: item.name,
+        value: String(item.id),
+      }
+    })
+
+    const resTag = segmentData?.map(item => {
+      return {
+        label: item.name,
+        value: String(item.id),
+      }
+    })
+    setTagOption(resTag);
+    setSegmentOption(resSegment)
+  }, [segmentData])
 
   async function handleSubmit() {
     setIsLoading(true);
@@ -105,7 +146,23 @@ export function Form({
             />
           </AntdForm.Item>
 
-          <SelectSegmento selectValue={select} setSelectValue={setSelect} />
+          <SelectSegmento
+            title="Selecione um segmento"
+            postUrl="segments"
+            data={segmentOption}
+            refetch={segmentRefetch}
+            selectValue={select} 
+            setSelectValue={setSelect} 
+          />
+
+          <SelectSegmento
+            title="Selecione uma tag"
+            postUrl="segments"
+            data={tagOption}
+            refetch={segmentRefetch}
+            selectValue={select2} 
+            setSelectValue={setSelect2} 
+          />
         </CardWrapper>
       </AntdForm>
 

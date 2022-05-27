@@ -1,32 +1,18 @@
 import React, { useState } from "react";
 
 import { Select, Form as AntdForm, Input, Button, Modal } from "antd";
-import { useFetch } from "../../../hooks/useFetch";
-import { api } from "../../../services/api";
+import { api } from "../../services/api";
 import toast from "react-hot-toast";
+import { ISelectSegmentoComponent } from "./types";
 
-interface ISegmentProps {
-  createdAt: string;
-  deletedAt: string | null;
-  id: number;
-  name: string;
-  updatedAt: string;
-  userId: number;
-}
-
-interface ISelectProps {
-  label: string; 
-  value: string;
-}
-
-interface ISelectSegmentoComponent {
-  selectValue: ISelectProps;
-  setSelectValue: (event: ISelectProps) => void;
-}
-
-export function SelectSegmento({ selectValue, setSelectValue }: ISelectSegmentoComponent) {
-  const { dataFetch, refetch } = useFetch<ISegmentProps[]>({ baseUrl: "segments", isLinkProps: false });
-  
+export function SelectSegmento({ 
+  title, 
+  postUrl = "", 
+  data, 
+  refetch, 
+  selectValue, 
+  setSelectValue,
+}: ISelectSegmentoComponent) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [dataInputModal, setDataInputModal] = useState("");
   
@@ -36,7 +22,7 @@ export function SelectSegmento({ selectValue, setSelectValue }: ISelectSegmentoC
       return;
     }
 
-    const { data } = await api.post<ISegmentProps>("segments", { name: dataInputModal });
+    const { data } = await api.post(postUrl, { name: dataInputModal });
 
     setSelectValue({ 
       value: String(data.id), 
@@ -56,28 +42,29 @@ export function SelectSegmento({ selectValue, setSelectValue }: ISelectSegmentoC
       <div style={{ display: "flex", gap: "1rem" }}>
         <AntdForm.Item label="Segmento" style={{ width: "100%" }}>
           <Select
-            showSearch
-            placeholder="Selecione uma segmento"
-            value={selectValue.value !== "" && Number(selectValue.value)}
+            placeholder={title}
+            value={selectValue.value !== "" && selectValue.value}
             onChange={value => handleSelected(String(value))}
           > 
-            {dataFetch?.map(segment => (
-              <Select.Option value={segment.id}>{segment.name}</Select.Option>
+            {data?.map(segment => (
+              <Select.Option value={segment.value}>{segment.label}</Select.Option>
             ))}
           </Select>
         </AntdForm.Item>
-
-        <Button 
-          onClick={() => setModalIsOpen(true)}
-          style={{ marginTop: "2.20rem", height: "2.3rem" }}
-        >
-          +
-        </Button>
+        
+        {postUrl && (
+          <Button 
+            onClick={() => setModalIsOpen(true)}
+            style={{ marginTop: "2.20rem", height: "2.3rem" }}
+          >
+            +
+          </Button>
+        )}
       </div>
 
       <Modal
         title="Adicionar item ao select"
-        visible={modalIsOpen}
+        visible={!postUrl ? false : modalIsOpen}
         onCancel={() => setModalIsOpen(false)}
         footer={null}
         maskClosable={false}

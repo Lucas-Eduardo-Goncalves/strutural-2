@@ -1,13 +1,17 @@
+import Item from "antd/lib/list/Item";
 import { useCallback, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import toast from "react-hot-toast";
-
 import { api } from "../services/api";
 
 interface IUseFetchProps {
   baseUrl: string;
   isLinkProps?: boolean;
   isArray?: boolean;
+}
+
+interface FilterProps {
+  key: string; 
+  content: string;
 }
 
 export function useFetch<T = unknown>({
@@ -17,17 +21,18 @@ export function useFetch<T = unknown>({
 }: IUseFetchProps) {
   const [dataFetch, setDataFetch] = useState<T | undefined>();
   const [isFetching, setIsFetching] = useState(false);
+  const [filterLink, setFilterLink] = useState("");
 
   const [itensPerPage, setItensPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalItens, setTotalItens] = useState(0);
 
-  const [filters, setFilters] = useState("");
+  const [filters, setFilters] = useState<FilterProps[]>([] as FilterProps[]);
   const [search, setSearch] = useState("");
 
   const [columnOrdenation, setColumnOrdenation] = useState("");
 
-  const linkFetch = `${baseUrl}?limit=${itensPerPage}&page=${currentPage}&search=${search}&sortBy=${columnOrdenation}${filters}`;
+  const linkFetch = `${baseUrl}?limit=${itensPerPage}&page=${currentPage}&search=${search}&sortBy=${columnOrdenation}${filterLink}`;
 
   const fetchAPI = useCallback(async () => {
     let variableFetchLink = linkFetch;
@@ -59,6 +64,22 @@ export function useFetch<T = unknown>({
     await fetchAPI();
   }
 
+  useEffect(() => {
+    const res = filters.map(item => { return `&${item.key}:${item.content}`});
+    console.log(res.toString());
+  }, [filters]);
+
+  function handleAddFilters(object: FilterProps) {
+    let initialArray = filters;
+    let arrayFilter = initialArray.filter((item) => item.key !== object.key);
+    let finalArray = [...arrayFilter, object];
+    setFilters(finalArray);
+  }
+
+  function clearFilters() {
+    setFilters([])
+  }
+
   const [cookies] = useCookies(["whats-front-token"]);
   const token = cookies["whats-front-token"];
 
@@ -78,11 +99,12 @@ export function useFetch<T = unknown>({
     isFetching,
     currentPage,
     setCurrentPage,
+    clearFilters,
     itensPerPage,
     setItensPerPage,
     totalItens,
     filters,
-    setFilters,
+    handleAddFilters,
     search,
     setSearch,
     columnOrdenation,

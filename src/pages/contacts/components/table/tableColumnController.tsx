@@ -8,7 +8,6 @@ import { SortOrder } from "../../../../container/pages/escolas/types";
 import { TableButtonDelete } from "./TableButtonDelete";
 import { TableButtonEdit } from "./TableButtonEdit";
 
-
 interface ITableColumnControllerProps {
   handleDeleteFunction: (contactId: string) => Promise<void>;
   refetch: () => void;
@@ -64,6 +63,7 @@ export function TableColumnController({ handleDeleteFunction, refetch }: ITableC
           <TableButtonEdit 
             contactId={String(row.id)} 
             refetch={refetch}
+            data={row}
           />
 
           <TableButtonDelete 
