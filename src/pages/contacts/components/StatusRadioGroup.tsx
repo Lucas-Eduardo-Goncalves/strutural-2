@@ -11,7 +11,7 @@ export function StatusRadioGroup({ handleAddFilters }: Props) {
       <div className="table-toolbox-menu">
         <span className="toolbox-menu-title"> Status:</span>
 
-        <Radio.Group onChange={(e) => handleAddFilters({ key: "isActive", content: e.target.value })} defaultValue="1">
+        <Radio.Group onChange={(e) => handleAddFilters({ key: "&isActive:", content: e.target.value })} defaultValue="1">
           <Radio.Button value="0">
             Ativos
           </Radio.Button>

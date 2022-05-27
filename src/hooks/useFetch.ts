@@ -65,8 +65,8 @@ export function useFetch<T = unknown>({
   }
 
   useEffect(() => {
-    const res = filters.map(item => { return `&${item.key}:${item.content}`});
-    console.log(res.toString());
+    const res = filters.map(item => { return `${item.key}${item.content}`});
+    setFilterLink(res.join(""))
   }, [filters]);
 
   function handleAddFilters(object: FilterProps) {
@@ -92,7 +92,7 @@ export function useFetch<T = unknown>({
 
   useEffect(() => {
     if(token) fetchAPI();
-  }, [itensPerPage, currentPage, filters, search, columnOrdenation, fetchAPI, token]);
+  }, [linkFetch]);
 
   return {
     dataFetch,

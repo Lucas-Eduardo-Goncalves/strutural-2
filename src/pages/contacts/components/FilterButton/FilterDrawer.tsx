@@ -18,7 +18,7 @@ type FiltersProps = {
 export function FilterDrawer ({ handleAddFilters, clearFilters, filters }: FiltersProps) {
   function handleChangeFilters([date1, date2]: any) {
     const format = (date?: moment.Moment) => (date ? date.format('YYYY-MM-DD') : '');
-    handleAddFilters({ key: "filter.createdAt", content: `${format(date1)},${format(date2)}` })
+    handleAddFilters({ key: "&filter.createdAt=$btw:", content: `${format(date1)},${format(date2)}` })
   }
 
   return (
