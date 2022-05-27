@@ -5,9 +5,13 @@ interface ISelectProps {
 
 export interface ISelectSegmentoComponent {
   title: string;
-  data?: ISelectProps[];
+  fetchUrl: string;
   postUrl?: string;
-  refetch: () => void;
   selectValue: ISelectProps;
   setSelectValue: (event: ISelectProps) => void;
+}
+
+export interface IFetchProps {
+  name: string;
+  id: string;
 }

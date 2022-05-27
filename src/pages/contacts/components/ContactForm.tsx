@@ -61,31 +61,6 @@ export function Form({
     setModalIsOpen(false);
   }
 
-  const [segmentOption, setSegmentOption] = useState<{ label: string; value: string; }[]>()
-  const [tagOption, setTagOption] = useState<{ label: string; value: string; }[]>()
-  const { 
-    dataFetch: segmentData, 
-    refetch: segmentRefetch,
-  } = useFetch<ISegmentProps[]>({ baseUrl: "segments" });
-
-  useEffect(() => {
-    const resSegment = segmentData?.map(item => {
-      return {
-        label: item.name,
-        value: String(item.id),
-      }
-    })
-
-    const resTag = segmentData?.map(item => {
-      return {
-        label: item.name,
-        value: String(item.id),
-      }
-    })
-    setTagOption(resTag);
-    setSegmentOption(resSegment)
-  }, [segmentData])
-
   async function handleSubmit() {
     setIsLoading(true);
     
@@ -149,17 +124,15 @@ export function Form({
           <SelectSegmento
             title="Selecione um segmento"
             postUrl="segments"
-            data={segmentOption}
-            refetch={segmentRefetch}
+            fetchUrl="segments"
             selectValue={select} 
             setSelectValue={setSelect} 
           />
 
           <SelectSegmento
+            fetchUrl="segments"
             title="Selecione uma tag"
             postUrl="segments"
-            data={tagOption}
-            refetch={segmentRefetch}
             selectValue={select2} 
             setSelectValue={setSelect2} 
           />

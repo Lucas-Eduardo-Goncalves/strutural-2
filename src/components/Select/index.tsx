@@ -3,18 +3,20 @@ import React, { useState } from "react";
 import { Select, Form as AntdForm, Input, Button, Modal } from "antd";
 import { api } from "../../services/api";
 import toast from "react-hot-toast";
-import { ISelectSegmentoComponent } from "./types";
+import { ISelectSegmentoComponent, IFetchProps } from "./types";
+import { useFetch } from "../../hooks/useFetch";
 
 export function SelectSegmento({ 
   title, 
   postUrl = "", 
-  data, 
-  refetch, 
+  fetchUrl,
   selectValue, 
   setSelectValue,
 }: ISelectSegmentoComponent) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [dataInputModal, setDataInputModal] = useState("");
+
+  const { dataFetch, refetch } = useFetch<IFetchProps[]>({ baseUrl: fetchUrl });
   
   async function handleNewSelect() {
     if(!dataInputModal) {
@@ -43,11 +45,11 @@ export function SelectSegmento({
         <AntdForm.Item label="Segmento" style={{ width: "100%" }}>
           <Select
             placeholder={title}
-            value={selectValue.value !== "" && selectValue.value}
+            value={selectValue.value !== "" && String(selectValue.value)}
             onChange={value => handleSelected(String(value))}
           > 
-            {data?.map(segment => (
-              <Select.Option value={segment.value}>{segment.label}</Select.Option>
+            {dataFetch?.map(segment => (
+              <Select.Option value={String(segment.id)}>{segment.name}</Select.Option>
             ))}
           </Select>
         </AntdForm.Item>
