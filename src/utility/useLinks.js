@@ -8,5 +8,5 @@ export const CONFERENCE_ITEMS_URL = `${baseUrl}/api/fila-conferencia-itens`;
 export const SAVE_ITEM_CONFERRED_URL = `${baseUrl}/api/salvar-item-conferido`;
 export const INFO_CONFERENCE_QUEUE_URL = `${baseUrl}/api/informacoes-fila-conferencia`;
 export const STATUS_CONFERRED_ITEMS_URL = `${baseUrl}/api/status-itens-conferidos`;
-
+export const END_CONFERENCE_URL = `${baseUrl}/api/finalizar-conferencia`;
 export const IMAGES_URL = 'https://strutural.s3.sa-east-1.amazonaws.com';

@@ -1,12 +1,11 @@
 import { ReactNode } from "react";
 
 export interface IUserProps {
-  id: number;
+  avatar: string | null;
   createdAt: string;
-  deletedAt: string | null;
   email: string;
-  firstName: string;
-  lastName: string;
+  id: number;
+  name: string;
   phone: string;
   role: string;
   updatedAt: string;

@@ -25,14 +25,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const history = useHistory();
 
   const [user, setUser] = useState<IUserProps | undefined>(() => {
-    const userCookie = Cookie.get("whats-front-user");
+    const userCookie = Cookie.get("strutural-user");
 
     if(userCookie) return JSON.parse(userCookie);
     return undefined;
   });
 
   useEffect(() => {
-    const token = Cookie.get('whats-front-token');
+    const token = Cookie.get('strutural-token');
     if (token) {
       api.defaults.headers.common.authorization = `Bearer ${token}`;
     }
@@ -40,25 +40,27 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function signIn({ email, password }) {
     try {
-      const { data: { token, user } } = await api.post<ISignInResponse>('/auth/login', {
+      const { data: { token, user } } = await api.post<ISignInResponse>('/login', {
         email,
         password,
       });
+      
+      console.log({ token, user })
 
       api.defaults.headers.common.authorization = `Bearer ${token.accessToken}`;
 
-      Cookie.set('whats-front-token', token.accessToken, {
+      Cookie.set('strutural-token', token.accessToken, {
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // one day
       });
 
-      Cookie.set('whats-front-user', JSON.stringify(user), {
+      Cookie.set('strutural-user', JSON.stringify(user), {
         expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // one day
       });
 
       setUser(user);
-      toast.success(`Seja bem vindo, ${user.firstName}!`)
+      toast.success(`Seja bem vindo, ${user.name}!`)
 
-      history.push('/admin/contacts');
+      history.push('/admin/usuarios');
     } catch (err: any) {
       if(err.response.data.message.message === "error.userNotFound") {
         toast.error("Usuário não encontrado");
@@ -71,7 +73,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   function signOut() {
-    Cookie.remove("whats-front-token");
+    Cookie.remove("strutural-token");
     history.push("/");
   }
 

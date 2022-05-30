@@ -65,7 +65,7 @@ const Instances = () => {
     selectedRowKeys: [],
   });
 
-  const {  selectedRowKeys } = state;
+  const { item, selectedRowKeys } = state;
 
   useEffect(() => {
     if (data) {
@@ -113,17 +113,20 @@ const Instances = () => {
     if(userQRInstanseID !== "" && isOpenModalQRCode) {
       getUserInstance(userQRInstanseID)
         .then(response => {
-          if(!response?.instance?.user) {
-            setQRCodeState("");
-            createInstance(userQRInstanseID)
+          if(!response.instance.user) {
+            deleteQRCode(userQRInstanseID)
               .then(() => {
-                setTimeout(() => {
-                  getQRCode(userQRInstanseID)
-                    .then(response => {
-                      setInstanceExists(false);
-                      setQRCodeState(response.data.qrcode)
-                    })
-                }, 1000)
+                setQRCodeState("");
+                createInstance(userQRInstanseID)
+                  .then(() => {
+                    setTimeout(() => {
+                      getQRCode(userQRInstanseID)
+                        .then(response => {
+                          setInstanceExists(false);
+                          setQRCodeState(response.data.qrcode)
+                        })
+                    }, 2000)
+                  })
               })
           } else {
             setInstanceExists(true)
@@ -131,53 +134,6 @@ const Instances = () => {
         });
     }
   }, [userQRInstanseID, isOpenModalQRCode]);
-
-  useEffect(() => {
-    if(userQRInstanseID !== "" && isOpenModalQRCode) {
-      const interval = setInterval(() => {
-        console.log("atualizando qrcode")
-        getUserInstance(userQRInstanseID)
-          .then(response => {
-            if(!response?.instance?.user) {
-              deleteQRCode(userQRInstanseID)
-                .then(() => {
-                  createInstance(userQRInstanseID)
-                    .then(() => {
-                      setTimeout(() => {
-                        getQRCode(userQRInstanseID)
-                          .then(response => {
-                            setInstanceExists(false);
-                            setQRCodeState(response.data.qrcode)
-                          })
-                      }, 2000)
-                    })
-                })
-            } else {
-              setInstanceExists(true)
-            }
-          });
-      }, 30000)
-  
-      if(instanceExists) {
-        clearInterval(interval);
-      }
-    }
-  }, [instanceExists, userQRInstanseID, isOpenModalQRCode]);
-
-  useEffect(() => {
-    if(userQRInstanseID !== "" && isOpenModalQRCode && !instanceExists) {
-      const interval = setInterval(() => {
-        console.log("vendo se instancia existe")
-        getUserInstance(userQRInstanseID)
-          .then(response => {
-            if(response?.instance?.user) {
-              setInstanceExists(true);
-              clearInterval(interval);
-            }
-          })
-      }, 5000);
-    }
-  }, [instanceExists, userQRInstanseID, isOpenModalQRCode]);
 
   return (
     <ThemeLayout>

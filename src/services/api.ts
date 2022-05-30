@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "https://whatsapi.webi9.com.br/",
+  baseURL: "https://strutural.webi9.com.br/api/",
 })

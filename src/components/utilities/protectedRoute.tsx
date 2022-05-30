@@ -9,7 +9,7 @@ interface IProtectedRouteProps {
 }
 
 export function ProtectedRoute({ component, path }: IProtectedRouteProps) {
-  const token = Cookie.get("whats-front-token");
+  const token = Cookie.get("strutural-token");
 
   const isLoggedIn = token;
   return isLoggedIn ? <Route component={component} path={path} /> : <Redirect to="/" />;

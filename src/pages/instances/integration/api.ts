@@ -1,8 +1,9 @@
 import { api } from "../../../services/api";
+import Cookies from "js-cookie";
 import moment from 'moment';
 import { IFormData, IParams, IRowData, ISelectedData } from '../types';
 
-const token = localStorage.getItem("whats-front-token");
+const token = Cookies.get("strutural-token");
 
 export const getData = async (params: IParams, status: any) => {
   const format = (date?: moment.Moment) => (date ? date.format('YYYY-MM-DD') : '');
@@ -71,9 +72,9 @@ export const getDependences = async () => {
   const listAll = { limit: 100, page: 1 };
 
   const [cidadesResponse, escolaesferasResponse, escolagrausResponse] = await Promise.all([
-    api.get('api/v1/alunos', { params: listAll }),
-    api.get('api/v1/escolaesferas', { params: listAll }),
-    api.get('api/v1/escolagraus', { params: listAll }),
+    api.get('v1/alunos', { params: listAll }),
+    api.get('v1/escolaesferas', { params: listAll }),
+    api.get('v1/escolagraus', { params: listAll }),
   ]);
 
   const cidades = cidadesResponse.data.data.map((c: any) => ({
@@ -99,25 +100,25 @@ export const getDependences = async () => {
 };
 
 export const createData = async (params: IFormData) => {
-  await api.post('api/v1/escolas', params);
+  await api.post('v1/escolas', params);
 };
 
 export const updateData = async (key: string, params: IFormData) => {
-  await api.put('api/v1/escolas/'+key, params);
+  await api.put('v1/escolas/'+key, params);
 };
 
 export const deleteData = async (params: ISelectedData) => {
   
-    return await api.post('/api/v1/escolas/', {
+    return await api.post('/v1/escolas/', {
        data: params.keys.map(id => ({ id })) ,
     });
   
 };
 
 export const deleteDataOne = async (key: string) => {
-  await api.delete('/api/v1/escolas/'+key);
+  await api.delete('/v1/escolas/'+key);
 };
 
 export const restoreDataOne = async (key: string) => {
-  await api.put('/api/v1/escolas/restore/'+key);
+  await api.put('/v1/escolas/restore/'+key);
 };

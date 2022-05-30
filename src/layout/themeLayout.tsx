@@ -124,7 +124,7 @@ export function ThemeLayout({ children }: ThemeLayoutProps) {
                 to="/admin"
               >
                 <img
-                  src={require(`../static/img/logocia.png`)}
+                  src={require(`../static/img/logostrut.webp`)}
                   alt=""
                 />
               </Link>

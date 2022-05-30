@@ -1,15 +1,15 @@
 import React from 'react';
 import { Menu } from 'antd';
-import { NavLink, useRouteMatch } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import FeatherIcon from 'feather-icons-react';
 import propTypes from 'prop-types';
 // import jwt_decode from "jwt-decode";
 
 const MenuItems = ({ darkMode, toggleCollapsed, topMenu }) => {
-  const { path } = useRouteMatch();
+  const location = useLocation();
 
   const pathName = window.location.pathname;
-  const pathArray = pathName.split(path);
+  const pathArray = pathName.split(location.pathname);
   const mainPath = pathArray[1];
   const mainPathSplit = mainPath.split('/');
 
@@ -50,20 +50,69 @@ const MenuItems = ({ darkMode, toggleCollapsed, topMenu }) => {
     >
       {!topMenu && <p className="sidebar-nav-title">Principal</p>}
       <Menu.Item
-        icon={
-          !topMenu && (
-            <NavLink className="menuItem-iocn" to={`/dentista/agenda`}>
-              <FeatherIcon icon="calendar" />
-            </NavLink>
-          )
-        }
-        key="agenda"
-      >
-        <NavLink onClick={toggleCollapsed} to="/admin/ContactsNewCrud">
-          Contatos
-        </NavLink>
-      </Menu.Item> 
-    </Menu>
+          icon={
+            !topMenu && (
+              <NavLink className="menuItem-iocn" to={`/admin/usuarios`}>
+                <FeatherIcon icon="users" />
+              </NavLink>
+            )
+          }
+          key="usuarios"
+        >
+          <NavLink onClick={toggleCollapsed} to={`/admin/usuarios`}>
+            Usuarios
+          </NavLink>
+        </Menu.Item> 
+
+        {!topMenu && <p className="sidebar-nav-title">Principal</p>}
+
+        <Menu.Item
+          icon={
+            !topMenu && (
+              <NavLink className="menuItem-iocn" to={`/admin/products`}>
+                <FeatherIcon icon="shopping-cart" />
+              </NavLink>
+            )
+          }
+          key="produtos"
+        >
+          <NavLink onClick={toggleCollapsed} to={`/admin/products`}>
+            Produtos
+          </NavLink>
+        </Menu.Item> 
+
+        <Menu.Item
+          icon={
+            !topMenu && (
+              <NavLink className="menuItem-iocn" to={`/admin/conference`}>
+                <FeatherIcon icon="users" />
+              </NavLink>
+            )
+          }
+          key="conference"
+        >
+          <NavLink onClick={toggleCollapsed} to={`/admin/conference`}>
+            Conferencia
+          </NavLink>
+        </Menu.Item>
+  
+        {!topMenu && <p className="sidebar-nav-title">Whatsapp</p>}
+
+        <Menu.Item
+          icon={
+            !topMenu && (
+              <NavLink className="menuItem-iocn" to={`/admin/instancias`}>
+                <FeatherIcon icon="users" />
+              </NavLink>
+            )
+          }
+          key="instancias"
+        >
+          <NavLink onClick={toggleCollapsed} to={`/admin/instancias`}>
+            Instâncias
+          </NavLink>
+        </Menu.Item> 
+      </Menu>
   );
 };
 

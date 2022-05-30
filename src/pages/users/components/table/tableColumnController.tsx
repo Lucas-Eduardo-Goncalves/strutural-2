@@ -3,7 +3,7 @@ import moment from "moment";
 import { ColumnsType } from "antd/lib/table";
 
 
-import { IContactProps } from "../../types";
+import { IUserProps } from "../../types";
 import { SortOrder } from "../../../../container/pages/escolas/types";
 import { TableButtonDelete } from "./TableButtonDelete";
 import { TableButtonEdit } from "./TableButtonEdit";
@@ -33,38 +33,38 @@ export function TableColumnController({ handleDeleteFunction, refetch }: ITableC
     </div>
   );
 
-  const columns: ColumnsType<IContactProps> = [
+  const columns: ColumnsType<IUserProps> = [
     {
       title: "Nome",
       dataIndex: "name",
-      render: (_, row: IContactProps) => <MaxWidthColumn width={180}>{row.name}</MaxWidthColumn>,
+      render: (_, row: IUserProps) => <MaxWidthColumn width={180}>{row.name}</MaxWidthColumn>,
       ...defaultColumnProps,
     },
    
     {
       title: "E-mail",
       dataIndex: "email",
-      render: (_, row: IContactProps) => <MaxWidthColumn width={180}>{row.email}</MaxWidthColumn>,
+      render: (_, row: IUserProps) => <MaxWidthColumn width={180}>{row.email}</MaxWidthColumn>,
       ...defaultColumnProps,
     },
   
     {
       title: "Data de criação",
       dataIndex: "created_at",
-      render: (_, row: IContactProps) => <MaxWidthColumn width={180}>{moment(row.createdAt).format("DD/MM/YYYY")}</MaxWidthColumn>,
+      render: (_, row: IUserProps) => <MaxWidthColumn width={180}>{moment(row.created_at).format("DD/MM/YYYY")}</MaxWidthColumn>,
       ...defaultColumnProps,
     }, 
   
     {
       title: "Ações",
       dataIndex: "actions",
-      render: (_, row: IContactProps) => (
+      render: (_, row: IUserProps) => (
         <div className="table-actions">
-          <TableButtonEdit 
+          {/* <TableButtonEdit 
             contactId={String(row.id)} 
             refetch={refetch}
             data={row}
-          />
+          /> */}
 
           <TableButtonDelete 
             handleDeleteFunction={handleDeleteFunction} 

@@ -1,6 +1,5 @@
-import Item from "antd/lib/list/Item";
 import { useCallback, useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
 import { api } from "../services/api";
 
 interface IUseFetchProps {
@@ -32,7 +31,7 @@ export function useFetch<T = unknown>({
 
   const [columnOrdenation, setColumnOrdenation] = useState("");
 
-  const linkFetch = `${baseUrl}?limit=${itensPerPage}&page=${currentPage}&search=${search}&sortBy=${columnOrdenation}${filterLink}`;
+  const linkFetch = `/${baseUrl}?limit=${itensPerPage}&page=${currentPage}&search=${search}&sortBy=${columnOrdenation}${filterLink}`;
 
   const fetchAPI = useCallback(async () => {
     let variableFetchLink = linkFetch;
@@ -80,8 +79,7 @@ export function useFetch<T = unknown>({
     setFilters([])
   }
 
-  const [cookies] = useCookies(["whats-front-token"]);
-  const token = cookies["whats-front-token"];
+  const token = Cookies.get("strutural-token");
 
   useEffect(() => {
     if(token) {

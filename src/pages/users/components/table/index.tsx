@@ -10,9 +10,10 @@ interface ITableComponentProps {
   dataFetch?: IFetchPropsContacts;
   isLoading: boolean;
   refetch: () => void;
+  currentPage: number;
 }
 
-export function TableComponent({ refetch, dataFetch, isLoading }: ITableComponentProps) {
+export function TableComponent({ refetch, dataFetch, isLoading, currentPage }: ITableComponentProps) {
   const pageSizeOptions = ['10', '30', '50'];
 
   async function handleDeleteFunction(contactId: string) {
@@ -34,6 +35,10 @@ export function TableComponent({ refetch, dataFetch, isLoading }: ITableComponen
 
   console.log(filters[0].key + ":" + filters[0].content)
 
+  function handle(event: number) {
+    console.log(event)
+  }
+
   return (
     <AntdTable
       loading={isLoading}
@@ -41,12 +46,12 @@ export function TableComponent({ refetch, dataFetch, isLoading }: ITableComponen
       rowSelection={{  }}
       dataSource={dataFetch}
       columns={columns}
-      // pagination={{ 
-        // ...params.pagination, 
-        // ...paginationResult, 
-        // pageSizeOptions, 
-        // showSizeChanger: true 
-      // }}
+      pagination={{ 
+        current: currentPage,
+        onChange: handle,
+        pageSize: 10,
+        pageSizeOptions,
+      }}
     />
   );
 }

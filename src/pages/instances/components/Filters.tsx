@@ -41,6 +41,12 @@ const Filters: React.FC<FiltersProps> = ({ initialFilters, updateFilters, clearF
             ))}
           </Select>
         </Form.Item>
+
+      {/*   <Form.Item label="Ativo">
+          <Checkbox checked={filters.status} onChange={e => handleChange('status', e.target.checked)}>
+            Produto está ativo
+          </Checkbox>
+        </Form.Item> */}
       </Form>
 
       <footer>

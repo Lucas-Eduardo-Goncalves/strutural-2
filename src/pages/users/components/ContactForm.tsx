@@ -76,7 +76,7 @@ export function Form({
       return;
     }
 
-    if(!select) {
+    if(!select || !select2) {
       setIsLoading(false); 
       toast.error("Segmento não pode estar em branco.");
       return
@@ -84,11 +84,11 @@ export function Form({
 
     try {
       if(formType === "post") {
-        await api.post("/contacts", { name, email, segmentId: select.value });
+        await api.post("/contacts", { name, email, segmentId: select.value, tag: select2.value });
         setModalIsOpen(false);
       } else {
         if(contactId) {
-          await api.put(`contacts/${contactId}`, { name, email, segmentId: select.value });
+          await api.put(`contacts/${contactId}`, { name, email, segmentId: select.value, tag: select2.value });
           setModalIsOpen(false);
         }
       }
